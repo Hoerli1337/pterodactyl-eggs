@@ -5,7 +5,7 @@ MAINTAINER Hoerli :)
 
 # Notwendige Pakete installieren
 
-RUN apk add --no-cache --update curl tar bash fontconfig php7-fpm php7-gd php7-xml php7-curl mariadb \
+RUN apk add --no-cache --update nano curl tar bash fontconfig php7-fpm php7-gd php7-xml php7-curl mariadb \
     && adduser -D -h /home/container container
 	
 # Server kopieren
