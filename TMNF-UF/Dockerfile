@@ -1,10 +1,12 @@
-# Dockerfile for https://index.docker.io/u/crosbymichael/python/
-
-FROM alpine:3.7
-MAINTAINER Hoerli :)
+#################################
+## Dockerfile TM NF / UF       ##
+## Hoerli                      ##
+#################################
+FROM alpine:3.11
+LABEL maintainer='Hoerli (GameMania)'
 
 # Notwendige Pakete installieren
-RUN apk add --no-cache --update nano curl tar bash fontconfig php7-fpm php7-gd php7-xml php7-curl php7-mysqli mysql mysql-client \
+RUN apk add --no-cache --update nano ca-certificates curl tar bash fontconfig php7-fpm php7-gd php7-xml php7-curl php7-mysqli mysql mysql-client \
     && adduser -D -h /home/container container
 	
 # SQL-DB absichern
@@ -56,6 +58,9 @@ USER container
 ENV  USER=container HOME=/home/container
 
 WORKDIR /home/container
+VOLUME ${WORKDIR}
+
+EXPOSE 2350 2350/udp 3450 3450/udp 5000
 
 # COPY ./entrypoint.sh /entrypoint.sh
 
