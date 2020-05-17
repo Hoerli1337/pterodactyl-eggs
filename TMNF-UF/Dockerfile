@@ -20,12 +20,11 @@ RUN mkdir /home/container/xaseco
 RUN wget https://fastdl.gamemania.org/xaseco1.16-php7.zip
 RUN unzip xaseco1.16-php7.zip -d /home/container/xaseco
 
+COPY Config/xaseco/Aseco.sh /home/container/xaseco/Aseco.sh
+COPY Config/xaseco/AsecoF.sh /home/container/xaseco/AsecoF.sh
+
 RUN chmod 777 /home/container/xaseco/Aseco.sh
 RUN chmod 777 /home/container/xaseco/AsecoF.sh
-
-# Startdatei erstellen
-COPY Config/start-server.sh /home/container/start-server.sh
-RUN chmod 777 /home/container/start-server.sh
 
 RUN chown -R container.container /home/container/
 
@@ -37,6 +36,6 @@ VOLUME /home/container
 
 EXPOSE 2350 2350/udp 3450 3450/udp 5000
 
-# COPY ./entrypoint.sh /entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
 
-# CMD ["/bin/bash", "/entrypoint.sh"]
+CMD ["/bin/bash", "/entrypoint.sh"]
