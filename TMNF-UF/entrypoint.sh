@@ -9,7 +9,8 @@
 #/home/container/xaseco/Aseco.sh
 
 #!/bin/bash
-cd /home/container
+# cd /home/container
+cd /mnt/server
 
 #STARTUP = MODIFIED_STARTUP
 MODIFIED_STARTUP=eval echo $(echo ${STARTUP} | sed -e 's/{{/${/g' -e 's/}}/}/g')
