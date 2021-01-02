@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-02T16:10:12+01:00",
+    "exported_at": "2021-01-02T16:48:34+01:00",
     "name": "TeaSpeak",
     "author": "info@gamemania.org",
     "description": "TeaSpeak is a free to use client and server software for VoIP communication. It is the ideal deal software for everyone who is annoyed about limits and restrictions.",
@@ -15,7 +15,7 @@
     "startup": ".\/teastart_minimal.sh --property:voice.default_port={{SERVER_PORT}}",
     "config": {
         "files": "{}",
-        "startup": "{\r\n    \"done\": \"listening on 0.0.0.0:\",\r\n    \"userInteraction\": []\r\n}",
+        "startup": "{\r\n    \"done\": \"Starting server\",\r\n    \"userInteraction\": []\r\n}",
         "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"logs\/latest.log\"\r\n}",
         "stop": "^C"
     },
