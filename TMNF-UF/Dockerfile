@@ -11,7 +11,7 @@ RUN apk add --update --no-cache wget ca-certificates libstdc++ musl libuuid curl
   && adduser -D -h /home/container container
 
 USER container
-ENV  USER=container HOME=/mnt/server
+ENV  USER=container HOME=/home/container
 WORKDIR /home/container
 
 COPY ./entrypoint.sh /entrypoint.sh
