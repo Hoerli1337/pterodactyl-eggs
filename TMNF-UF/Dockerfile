@@ -12,7 +12,7 @@ RUN apk add --update --no-cache wget ca-certificates libstdc++ musl libuuid curl
 
 USER container
 ENV  USER=container HOME=/mnt/server
-WORKDIR /mnt/server
+WORKDIR /home/container
 
 COPY ./entrypoint.sh /entrypoint.sh
 CMD ["/bin/ash", "/entrypoint.sh"]
