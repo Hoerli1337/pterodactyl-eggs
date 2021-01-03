@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-03T11:49:52+01:00",
+    "exported_at": "2021-01-03T13:02:27+01:00",
     "name": "TrackMania Nations Forever \/ United Forever",
     "author": "info@gamemania.org",
     "description": "TrackMania Nations Forever \/ United Forever Dedicated Server with xAseco",
@@ -15,7 +15,7 @@
     "startup": ".\/start.sh",
     "config": {
         "files": "{}",
-        "startup": "{\r\n    \"done\": \"...OK\",\r\n    \"userInteraction\": []\r\n}",
+        "startup": "{\r\n    \"done\": \"Starting server...\",\r\n    \"userInteraction\": []\r\n}",
         "logs": "{}",
         "stop": "^C"
     },
