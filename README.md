@@ -3,5 +3,3 @@
 Pro Ei, gibts einen Ordner. - Per egg, there is one folder.
 
 https://pterodactyl.io/
-
-https://pteroeggs.com/
