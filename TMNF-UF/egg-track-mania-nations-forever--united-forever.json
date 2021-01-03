@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-03T11:47:58+01:00",
+    "exported_at": "2021-01-03T11:49:52+01:00",
     "name": "TrackMania Nations Forever \/ United Forever",
     "author": "info@gamemania.org",
     "description": "TrackMania Nations Forever \/ United Forever Dedicated Server with xAseco",
@@ -30,7 +30,7 @@
         {
             "name": "MASTERSERVER_ACCOUNT_USER",
             "description": "TrackMania Login",
-            "env_variable": "MASTERSERVER_ACCOUNT",
+            "env_variable": "MASTERSERVER_ACCOUNT_USER",
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
