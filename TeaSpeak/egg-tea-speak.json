@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-02T16:48:34+01:00",
+    "exported_at": "2021-01-03T18:12:00+01:00",
     "name": "TeaSpeak",
     "author": "info@gamemania.org",
     "description": "TeaSpeak is a free to use client and server software for VoIP communication. It is the ideal deal software for everyone who is annoyed about limits and restrictions.",
@@ -12,7 +12,7 @@
     "images": [
         "quay.io\/parkervcp\/pterodactyl-images:base_debian"
     ],
-    "startup": ".\/teastart_minimal.sh --property:voice.default_port={{SERVER_PORT}}",
+    "startup": ".\/teastart_minimal.sh --property:voice.default_port={{SERVER_PORT}} --property:binding.query.port={{QUERY_PORT}} --property:binding.file.port={{FILE_PORT}}",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"Starting server\",\r\n    \"userInteraction\": []\r\n}",
@@ -21,10 +21,38 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# TS3 Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\napt update\r\napt install -y tar wget bzip2 ffmpeg\r\n\r\ncd \/mnt\/server\r\nwget https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-1.4.22.tar.gz -qO \/mnt\/server\/TeaSpeak.tar.gz\r\ntar -xvzf \/mnt\/server\/TeaSpeak.tar.gz\r\nrm TeaSpeak.tar.gz",
+            "script": "#!\/bin\/bash\r\n \r\n## install required packages and update the system\r\napt update\r\napt upgrade -y\r\napt install curl ffmpeg tar wget bzip2 -y\r\n\r\n## make and change to directory\r\nmkdir \/mnt\/server\r\ncd \/mnt\/server\/\r\n\r\n## get download link\r\nif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/latest).tar.gz\")\r\nelif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"nightly\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/latest).tar.gz\")\r\nelse\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-${VERSION}.tar.gz\")\r\nfi\r\n\r\nif [ ! -z \"${DOWNLOAD_URL}\" ]; then \r\n    if curl --output \/dev\/null --silent --head --fail ${DOWNLOAD_URL}; then\r\n        echo -e \"link is valid. setting download link to ${DOWNLOAD_URL}\"\r\n        DOWNLOAD_LINK=${DOWNLOAD_URL}\r\n    else        \r\n        echo -e \"link is invalid closing out\"\r\n        exit 2\r\n    fi\r\nfi\r\n\r\n## download files\r\necho -e \"running: curl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\"\r\ncurl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\r\n\r\n## unpack files\r\necho -e \"unpacking files\"\r\ntar xzvf teaspeak.tar.gz\r\nrm teaspeak.tar.gz\r\n\r\necho -e \"Install complete! Have fun!\"",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
     },
-    "variables": []
+    "variables": [
+        {
+            "name": "Teaspeak Version",
+            "description": "What version of teaspeak to install: latest = latest stable ; nightly = latest nightly",
+            "env_variable": "VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20"
+        },
+        {
+            "name": "QUERY_PORT",
+            "description": "The query port for TeaSpeak",
+            "env_variable": "QUERY_PORT",
+            "default_value": "10101",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|numeric|max:65535"
+        },
+        {
+            "name": "File Transfer Port",
+            "description": "The TeaSpeak File Transfer Port",
+            "env_variable": "FILE_PORT",
+            "default_value": "30303",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|numeric|max:65535"
+        }
+    ]
 }
