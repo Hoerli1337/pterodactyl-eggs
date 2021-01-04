@@ -13,7 +13,7 @@ A part of xAseco has to be configured by the user and a database is required. Th
 Tested on wings 1.2.0
 ________________________________________________
 
-# Pterodacty Egg für TrackMania Nations Forever / United Forever with xAseco
+# Pterodacty Egg für TrackMania Nations Forever / United Forever mit xAseco
 
 - TrackMania Nations Forever / United Forever
 
