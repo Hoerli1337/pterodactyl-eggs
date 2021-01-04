@@ -14,10 +14,12 @@ ________________________________________________
 # Pterodacty Egg für TrackMania Nations Forever / United Forever with xAseco
 
 - TrackMania Nations Forever / United Forever
+
 Ein reiner TM NF/UF Server ohne weitere Extras.
 Benötigt nur ein TM-Account und notwednige Ports.
 
 - TrackMania Nations Forever / United Forever + xAseco
+
 Ein TM NF/UF Server mit dem xAseco System.
 Ein Teil von xAseco muss von Nutzer noch eingestellt werden und eine Datenbank ist erforderlich. Das Egg hat keine Datenbank mit enthalten!
 
