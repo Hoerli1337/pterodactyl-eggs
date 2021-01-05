@@ -47,12 +47,12 @@
         },
         {
             "name": "MASTERSERVER_KEY",
-            "description": "Master server key - The last 3 characters of your key!",
+            "description": "Master server key - The last 3 characters of your key! Leave empty if you use a TMNF-Account.",
             "env_variable": "MASTERSERVER_KEY",
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string"
+            "rules": "string|max:3"
         },
         {
             "name": "SERVER_NAME",
