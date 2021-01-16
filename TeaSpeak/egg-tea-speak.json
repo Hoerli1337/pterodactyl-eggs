@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-03T18:12:00+01:00",
+    "exported_at": "2021-01-16T11:11:24+01:00",
     "name": "TeaSpeak",
     "author": "info@gamemania.org",
     "description": "TeaSpeak is a free to use client and server software for VoIP communication. It is the ideal deal software for everyone who is annoyed about limits and restrictions.",
@@ -21,7 +21,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n \r\n## install required packages and update the system\r\napt update\r\napt upgrade -y\r\napt install curl ffmpeg tar wget bzip2 -y\r\n\r\n## make and change to directory\r\nmkdir \/mnt\/server\r\ncd \/mnt\/server\/\r\n\r\n## get download link\r\nif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/latest).tar.gz\")\r\nelif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"nightly\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/latest).tar.gz\")\r\nelse\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-${VERSION}.tar.gz\")\r\nfi\r\n\r\nif [ ! -z \"${DOWNLOAD_URL}\" ]; then \r\n    if curl --output \/dev\/null --silent --head --fail ${DOWNLOAD_URL}; then\r\n        echo -e \"link is valid. setting download link to ${DOWNLOAD_URL}\"\r\n        DOWNLOAD_LINK=${DOWNLOAD_URL}\r\n    else        \r\n        echo -e \"link is invalid closing out\"\r\n        exit 2\r\n    fi\r\nfi\r\n\r\n## download files\r\necho -e \"running: curl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\"\r\ncurl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\r\n\r\n## unpack files\r\necho -e \"unpacking files\"\r\ntar xzvf teaspeak.tar.gz\r\nrm teaspeak.tar.gz\r\n\r\necho -e \"Install complete! Have fun!\"",
+            "script": "#!\/bin\/bash\r\n \r\n## install required packages and update the system\r\napt update\r\napt upgrade -y\r\napt install curl ffmpeg tar wget bzip2 gir1.2-nice-0.1 gstreamer1.0-nice libnice-dev -y\r\n\r\n## make and change to directory\r\nmkdir \/mnt\/server\r\ncd \/mnt\/server\/\r\n\r\n## get download link\r\nif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/latest).tar.gz\")\r\nelif [ \"${VERSION}\" == \"\" ] || [ \"${VERSION}\" == \"nightly\" ]; then\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/TeaSpeak-$(curl -sSLk https:\/\/repo.teaspeak.de\/server\/linux\/amd64_nightly\/latest).tar.gz\")\r\nelse\r\n    DOWNLOAD_URL=$(echo \"https:\/\/repo.teaspeak.de\/server\/linux\/amd64\/TeaSpeak-${VERSION}.tar.gz\")\r\nfi\r\n\r\nif [ ! -z \"${DOWNLOAD_URL}\" ]; then \r\n    if curl --output \/dev\/null --silent --head --fail ${DOWNLOAD_URL}; then\r\n        echo -e \"link is valid. setting download link to ${DOWNLOAD_URL}\"\r\n        DOWNLOAD_LINK=${DOWNLOAD_URL}\r\n    else        \r\n        echo -e \"link is invalid closing out\"\r\n        exit 2\r\n    fi\r\nfi\r\n\r\n## download files\r\necho -e \"running: curl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\"\r\ncurl -sSL -o teaspeak.tar.gz ${DOWNLOAD_LINK}\r\n\r\n## unpack files\r\necho -e \"unpacking files\"\r\ntar xzvf teaspeak.tar.gz\r\nrm teaspeak.tar.gz\r\n\r\necho -e \"Install complete! Have fun!\"",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
@@ -29,7 +29,7 @@
     "variables": [
         {
             "name": "Teaspeak Version",
-            "description": "What version of teaspeak to install: latest = latest stable ; nightly = latest nightly",
+            "description": "What version of teaspeak to install: latest = latest stable ; nightly = latest nightly; optimized = latest optimized version ; debug = latest debug version",
             "env_variable": "VERSION",
             "default_value": "latest",
             "user_viewable": true,
