@@ -19,3 +19,4 @@ Benötigt nur ein TM-Account und notwednige Ports.
 
 
 Getestet mit Wings 1.2.0
+https://hoerli.net/wp-content/uploads/2023/04/TrackMania-Nations-Forever.png
