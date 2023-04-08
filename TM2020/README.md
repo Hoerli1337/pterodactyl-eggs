@@ -14,3 +14,4 @@ Ein reiner TrackMania Server ohne weitere Extras.
 Benötigt einen TM-Account mit Club-Zugang!
 
 Getestet mit Wings 1.13.3
+![Screenshot](https://hoerli.net/wp-content/uploads/2023/04/TrackMania-2020-Pterodactyl-Egg.png)
