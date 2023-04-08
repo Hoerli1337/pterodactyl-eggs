@@ -1,31 +1,20 @@
 # Pterodacty Egg for ManiaPlanet
 
-- ManiaPlanet
+- ManiaPlanet Dedicated Server for TrackMania and ShootMania
 
 A pure ManiaPlanet server without any extras.
 Requires only a TM/SM account and necessary ports.
 
-- More Stuff
-
-Coming Soon!
-
-**Dockerfile of the TM NF/UF-Egg**
-
-Tested on wings 1.2.0
+Tested on wings 1.13.3
 ________________________________________________
 
-# Pterodacty Egg für TrackMania Nations Forever / United Forever mit xAseco
+# Pterodactyl Ei für ManiaPlanet
 
-- ManiaPlanet
+- ManiaPlanet Dedicated Server für TrackMania und ShootMania
 
 Ein reiner ManiaPlanet Server ohne weitere Extras.
 Benötigt nur ein TM/SM-Account und notwednige Ports.
 
-- Mehr Eggs
+Getestet mit Wings 1.13.3
 
-Kommen bald!
-
-
-**Dockerfile aus dem TM NF/UF-Egg**
-
-Getestet mit Wings 1.2.0
+![Screenshot](https://hoerli.net/wp-content/uploads/2023/04/ManiaPlanet-Server-Pterodactyl-Egg.png)
