@@ -6,7 +6,7 @@
     },
     "exported_at": "2023-04-08T14:11:55+02:00",
     "name": "TrackMania (2020)",
-    "author": "gameserver@gamemania.org",
+    "author": "info@gamemania.org",
     "description": "Trackmania Dedicated Server. You need a TM-Account with Club Access to create a dedicated server account.",
     "features": null,
     "docker_images": {
