@@ -4,9 +4,9 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-04-08T11:55:28+02:00",
+    "exported_at": "2023-04-08T14:11:55+02:00",
     "name": "TrackMania (2020)",
-    "author": "info@gamemania.org",
+    "author": "gameserver@gamemania.org",
     "description": "Trackmania Dedicated Server. You need a TM-Account with Club Access to create a dedicated server account.",
     "features": null,
     "docker_images": {
@@ -16,7 +16,7 @@
     "startup": ".\/TrackmaniaServer \/nodaemon \/dedicated_cfg=dedicated_cfg.txt \/game_settings=MatchSettings\/maplist.txt \/noautoquit",
     "config": {
         "files": "{}",
-        "startup": "{\r\n    \"done\": \"Starting ...\"\r\n}",
+        "startup": "{\r\n    \"done\": \"Starting server...\"\r\n}",
         "logs": "{}",
         "stop": "^C"
     },
@@ -78,26 +78,6 @@
             "rules": "required|int",
             "field_type": "text"
         },
-		{
-            "name": "SERVER_P2P_PORT",
-            "description": "P2P-Port",
-            "env_variable": "SERVER_P2P_PORT",
-            "default_value": "3450",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|int",
-            "field_type": "text"
-        },
-		{
-            "name": "XMLRPC_PORT",
-            "description": "XML RCP Port",
-            "env_variable": "XMLRPC_PORT",
-            "default_value": "5000",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|int",
-            "field_type": "text"
-        },
         {
             "name": "DEDICATED_CFG",
             "description": "Dedicated config file",
@@ -146,6 +126,26 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "SERVER_P2P_PORT",
+            "description": "P2P-Port",
+            "env_variable": "SERVER_P2P_PORT",
+            "default_value": "3450",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|int",
+            "field_type": "text"
+        },
+        {
+            "name": "XMLRPC_PORT",
+            "description": "XML RCP Port",
+            "env_variable": "XMLRPC_PORT",
+            "default_value": "5000",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|int",
             "field_type": "text"
         },
         {
