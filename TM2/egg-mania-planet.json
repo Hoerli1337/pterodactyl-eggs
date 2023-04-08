@@ -4,16 +4,16 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-04-08T13:54:49+02:00",
+    "exported_at": "2023-04-08T13:59:59+02:00",
     "name": "ManiaPlanet",
     "author": "info@gamemania.org",
-    "description": "ManiaPlanet Dedicated Server",
+    "description": "ManiaPlanet Dedicated Server for TrackMania and ShootMania.",
     "features": null,
     "docker_images": {
         "hoerli\/tmnf-uf:latest": "hoerli\/tmnf-uf:latest"
     },
     "file_denylist": [],
-    "startup": ".\/ManiaPlanetServer \/nodaemon \/title=TMStadium \/game_settings=MatchSettings\/maplist.txt \/dedicated_cfg=dedicated_cfg.txt  \/noautoquit",
+    "startup": ".\/ManiaPlanetServer \/nodaemon \/title={{PACKMASK}} \/game_settings=MatchSettings\/maplist.txt \/dedicated_cfg=dedicated_cfg.txt  \/noautoquit",
     "config": {
         "files": "{}",
         "startup": "{\r\n    \"done\": \"Starting server...\",\r\n    \"userInteraction\": []\r\n}",
