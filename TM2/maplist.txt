@@ -1,23 +1,34 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <playlist>
-	<gameinfos> 
-		<game_mode>0</game_mode> 
-		<chat_time>10000</chat_time> 
-		<finishtimeout>1</finishtimeout> 
-		<allwarmupduration>0</allwarmupduration> 
-		<disablerespawn>0</disablerespawn> 
-		<forceshowallopponents>0</forceshowallopponents> 
-		<script_name>Chase/Chase.Script.txt</script_name> 
-	</gameinfos> 
-	
-	<filter> 
-		<is_lan>1</is_lan> 
-		<is_internet>1</is_internet> 
-		<is_solo>0</is_solo> 
-		<is_hotseat>0</is_hotseat> 
-		<sort_index>1000</sort_index> 
-		<random_map_order>0</random_map_order> 
-	</filter> 
+	<gameinfos>
+		<game_mode>0</game_mode>
+		<script_name>TimeAttack.Script.txt</script_name>
+		<title>TMStadium@nadeo</title>
+		<chat_time>10000</chat_time>
+		<finishtimeout>1</finishtimeout>
+		<allwarmupduration>0</allwarmupduration>
+		<disablerespawn>0</disablerespawn>
+		<forceshowallopponents>0</forceshowallopponents>
+	</gameinfos>
+
+	<filter>
+    		<random_map_order>1</random_map_order>
+	</filter>
+
+	<hotseat>
+		<game_mode>0</game_mode>
+		<time_limit>300000</time_limit>
+		<rounds_count>5</rounds_count>
+	</hotseat>
+
+        <filter>
+		<is_lan>1</is_lan>
+		<is_internet>1</is_internet>
+		<is_solo>0</is_solo>
+		<is_hotseat>0</is_hotseat>
+		<sort_index>1000</sort_index>
+		<random_map_order>1</random_map_order>
+        </filter>
 	
 	<script_settings> 
 		<setting name="S_ChatTime" type="integer" value="20"/> 
