@@ -4,158 +4,78 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-04-08T14:11:55+02:00",
-    "name": "TrackMania (2020)",
-    "author": "info@gamemania.org",
-    "description": "Trackmania Dedicated Server. You need a TM-Account with Club Access to create a dedicated server account.",
+    "exported_at": "2023-09-03T14:56:16+02:00",
+    "name": "Trackmania 2020",
+    "author": "admin@altvserver.de",
+    "description": "Trackmania 2020 Dedicated Server",
     "features": null,
     "docker_images": {
         "quay.io\/parkervcp\/pterodactyl-images:base_debian": "quay.io\/parkervcp\/pterodactyl-images:base_debian"
     },
     "file_denylist": [],
-    "startup": ".\/TrackmaniaServer \/nodaemon \/dedicated_cfg=dedicated_cfg.txt \/game_settings=MatchSettings\/maplist.txt \/noautoquit",
+    "startup": ".\/TrackmaniaServer \/title=Trackmania \/game_Settings=Matchsettings\/tracklist.txt \/dedicated_cfg=dedicated_cfg.txt \/nodaemon",
     "config": {
-        "files": "{}",
-        "startup": "{\r\n    \"done\": \"Starting server...\"\r\n}",
+        "files": "{\r\n    \"UserData\/Config\/dedicated_cfg.txt\": {\r\n        \"parser\": \"xml\",\r\n        \"find\": {\r\n            \"dedicated.system_config.server_port\": \"{{server.build.default.port}}\",\r\n            \"dedicated.system_config.xmlrpc_port\": \"{{server.build.env.RPC_PORT}}\",\r\n            \"dedicated.server_options.name\": \"{{server.build.env.SERVER_NAME}}\",\r\n            \"dedicated.server_options.max_players\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.max_spectators\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.masterserver_account.login\": \"{{server.build.env.MASTER_USER}}\",\r\n            \"dedicated.masterserver_account.password\": \"{{server.build.env.MASTER_PASS}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"...Load succeeds\"\r\n}",
         "logs": "{}",
         "stop": "^C"
     },
     "scripts": {
         "installation": {
-            "script": "# Update system\r\napt update && apt upgrade -y\r\n\r\n# Install necessary stuff\r\napt install ca-certificates wget unzip tar bash curl -y\r\n\r\n# URLs der Server-Daten\r\nDEDICATED_URL=\"https:\/\/nadeo-download.cdn.ubi.com\/trackmania\/TrackmaniaServer_Latest.zip\"\r\nTRACKLIST_URL=\"https:\/\/raw.githubusercontent.com\/Hoerli1337\/pterodactyl-eggs\/master\/TMNF-UF\/tracklist.txt\"\r\n\r\n# Variables for the installation\r\nUSER=\"container\"\r\nWORKDIR=\"\/mnt\/server\"\r\n\r\n# Create main folder\r\nmkdir -pv ${WORKDIR}\r\ncd ${WORKDIR}\r\n\r\n# Load and unzip TrackMania Server data\r\nwget ${DEDICATED_URL} -qO ${WORKDIR}\/dedicated.zip\r\nunzip -qo ${WORKDIR}\/dedicated.zip -d ${WORKDIR}\r\nchmod 775 -v ${WORKDIR}\/TrackmaniaServer\r\nchown -Rv ${USER}: ${WORKDIR}\r\n\r\n# Create the config-File with the variables\r\n\r\nif [ ! -f ${WORKDIR}\/UserData\/Config\/dedicated_cfg.txt ]; then\r\necho \"<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n\r\n<dedicated>\r\n\t<authorization_levels>\r\n\t\t<level>\r\n\t\t\t<name>${SUPERADMIN_NAME:-SuperAdmin}<\/name>\r\n\t\t\t<password>${SUPERADMIN_PWD:-SuperAdmin}<\/password>\r\n\t\t<\/level>\r\n\t\t<level>\r\n\t\t\t<name>${ADMIN_NAME:-Admin}<\/name>\r\n\t\t\t<password>${ADMIN_PWD:-Admin}<\/password>\r\n\t\t<\/level>\r\n\t\t<level>\r\n\t\t\t<name>${USER_PWD:-User}<\/name>\r\n\t\t\t<password>${USER_PWD:-User}<\/password>\r\n\t\t<\/level>\r\n\t<\/authorization_levels>\r\n\t\r\n \t<masterserver_account>\r\n\t\t<login>${MASTERSERVER_ACCOUNT_USER:-}<\/login>\r\n\t\t<password>${MASTERSERVER_ACCOUNT_PWD:-}<\/password>\r\n\t<\/masterserver_account>\r\n\t\r\n\t<server_options>\r\n\t\t<name>${SERVER_NAME:-}<\/name>\r\n\t\t<comment>${COMMENT:-}<\/comment>\r\n\t\t<hide_server>${HIDE_SERVER:-0}<\/hide_server>\t\t\t\t\t<!-- value is 0 (always shown), 1 (always hidden), 2 (hidden from nations) -->\r\n\r\n\t\t<max_players>${MAX_PLAYERS:-32}<\/max_players>\r\n\t\t<password>${SERVER_PASSWORD:-}<\/password>\r\n\t\t\r\n\t\t<max_spectators>${MAX_SPECTATORS:-32}<\/max_spectators>\r\n\t\t<password_spectator>${PASSWORD_SPECTATOR:-}<\/password_spectator>\r\n\t\r\n\t\t<keep_player_slots>False<\/keep_player_slots>\t\t\t<!-- when a player changes to spectator, hould the server keep if player slots\/scores etc.. or not. --> \t\r\n\t\t<ladder_mode>${LADDER_MODE:-forced}<\/ladder_mode>\t\t\t\t<!-- value between 'inactive', 'forced' (or '0', '1') -->\r\n\t\t\r\n\t\t<enable_p2p_upload>${P2P_UPLOAD:-True}<\/enable_p2p_upload>\r\n\t\t<enable_p2p_download>${P2P_DOWNLOAD:-True}<\/enable_p2p_download>\r\n\t\t\r\n\t\t<callvote_timeout>${CALLVOTE_TIMEOUT:-60000}<\/callvote_timeout>\r\n\t\t<callvote_ratio>${CALLVOTE_RATIO:-0.5}<\/callvote_ratio>\t\t\t\t<!-- default ratio. value in [0..1], or -1 to forbid. -->\r\n\t\t<callvote_ratios>\r\n\t\t\t<voteratio command=\"Ban\" ratio=\"-1\"\/>\r\n\t\t\t<!-- commands can be \"Ban\", \"Kick\", \"RestartMap\", \"NextMap\", \"SetModeScriptSettingsAndCommands\"... -->\r\n\t\t<\/callvote_ratios>\r\n\r\n\t\t<allow_map_download>${ALLOW_MAP_DOWNLOAD:-True}<\/allow_map_download>\r\n\t\t<autosave_replays>${AUTOSAVE_REPLAYS:-False}<\/autosave_replays>\r\n\t\t<autosave_validation_replays>${AUTOSAVE_VALIDATION_REPLAYS:-False}<\/autosave_validation_replays>\r\n\r\n\t\t<referee_password><\/referee_password>\r\n\t\t<referee_validation_mode>0<\/referee_validation_mode>\t\t<!-- value is 0 (only validate top3 players),  1 (validate all players) -->\r\n\r\n\t\t<use_changing_validation_seed>False<\/use_changing_validation_seed>\r\n\r\n\t\t<disable_horns>False<\/disable_horns>\r\n\t\t<disable_profile_skins>False<\/disable_profile_skins>        <!-- ignore player chosen skins and only use default country skin -->\r\n\t\t<clientinputs_maxlatency>200<\/clientinputs_maxlatency>      <!-- players with c2s-latency greater than this value will experience difficulties playing, but a lower value reduce overall clients CPU usage (max 540ms) -->\r\n\t<\/server_options>\r\n\t\r\n\t<system_config>\r\n\t\t<connection_uploadrate>${CONN_UPLOAD_RATE:-102400}<\/connection_uploadrate>\t\t\t\t\t\t<!-- Kbits per second -->\r\n\t\t<connection_downloadrate>${CONN_DOWNLOAD_RATE:-102400}<\/connection_downloadrate>\t\t\t\t\t<!-- Kbits per second -->\r\n\r\n\t\t<workerthreadcount>2<\/workerthreadcount>\r\n\t\t<packetassembly_multithread>True<\/packetassembly_multithread>\r\n\t\t<packetassembly_packetsperframe>60<\/packetassembly_packetsperframe>                 <!-- Number of reduced SIMU-packets sent each frame (=10ms) -->\r\n\t\t<packetassembly_fullpacketsperframe>30<\/packetassembly_fullpacketsperframe>         <!-- Number of full SIMU-packets sent each frame (=10ms) -->\r\n\t\t<delayedvisuals_s2c_sendingrate>32<\/delayedvisuals_s2c_sendingrate>                 <!-- proportion of frames when the server sends DELAYEDVISUAL-packets to everyone. 255 means every frame, 128 means every other frame, 64 means every fourth frame... -->\r\n\r\n\t\t<trustclientsimu_c2s_sendingrate>64<\/trustclientsimu_c2s_sendingrate>               <!-- proportion of frames when the clients send TRUSTCLIENTSIMU-packets to the server.  255 means every frame, 128 means every other frame, 64 means every fourth frame... -->\r\n\r\n\t\t<allow_spectator_relays>False<\/allow_spectator_relays>\r\n\r\n\t\t<p2p_cache_size>${P2P_CACHE_SIZE:-4000}<\/p2p_cache_size>\r\n\r\n\t\t<force_ip_address><\/force_ip_address>\r\n\t\t<server_port>${TM_SERVER_PORT:-2350}<\/server_port>\r\n\t\t<client_port>0<\/client_port>\r\n\t\t<bind_ip_address>${BIND_IP_ADDRESS:-}<\/bind_ip_address>\r\n\t\t<use_nat_upnp>${USE_NAT_UPNP:-}<\/use_nat_upnp>\r\n\r\n\t\t<gsp_name>${USE_GSP_NAME:-}<\/gsp_name>\t\t\t\t\t\t<!-- Game Server Provider name and info url -->\r\n\t\t<gsp_url>${USE_GSP_URL:-}<\/gsp_url>\t\t\t\t\t\t<!-- If you're a server hoster, you can use this to advertise your services -->\r\n\r\n\t\t<xmlrpc_port>${XMLRPC_PORT:-5000}<\/xmlrpc_port>\r\n\t\t<xmlrpc_allowremote>${XMLRPC_ALLOW_REMOTE:-True}<\/xmlrpc_allowremote>\t\t\t<!-- If you specify an ip adress here, it'll be the only accepted adress. this will improve security. -->\r\n\r\n\t\t\r\n\t\t<blacklist_url>${BLACKLIST_URL:-}<\/blacklist_url>\r\n\t\t<guestlist_filename>${GUESTLIST_FILENAME:-}<\/guestlist_filename>\r\n\t\t<blacklist_filename>${BLACKLIST_FILENAME:-}<\/blacklist_filename>\r\n\t\t\r\n\t\t<minimum_client_build><\/minimum_client_build>\t\t\t<!-- Only accept updated client to a specific version. ex: 2011-10-06 -->\r\n\r\n\t\t<disable_coherence_checks>False<\/disable_coherence_checks>\t<!-- disable internal checks to detect issues\/cheats, and reject race times -->\r\n\r\n\t\t<disable_replay_recording>False<\/disable_replay_recording>\t<!-- disable replay recording in memory during the game to lower memory usage. -->\r\n\t\t<save_all_individual_runs>False<\/save_all_individual_runs>\t<!-- Save all the ghosts from the match replay to individual ghost.gbx files, in folder {servername}\/Autosaves\/Runs_{mapname}\/  -->\r\n\r\n\t\t<use_proxy>${USE_PROXY:-False}<\/use_proxy>\r\n\t\t<proxy_url><\/proxy_url>\r\n\t<\/system_config>\r\n<\/dedicated>\r\n\" > ${WORKDIR}\/UserData\/Config\/dedicated_cfg.txt\r\nfi\r\n\r\n# Copy a Maplist to create a custom Maplist\r\ncp ${WORKDIR}\/UserData\/Maps\/MatchSettings\/example.txt ${WORKDIR}\/UserData\/Maps\/MatchSettings\/maplist.txt\r\n\r\n############################################################################################################################\r\n\r\n# Cleanup\r\nrm ${WORKDIR}\/dedicated.zip\r\nrm ${WORKDIR}\/TrackmaniaServer.exe\r\nrm -r ${WORKDIR}\/RemoteControlExamples\r\nrm ${WORKDIR}\/UserData\/Config\/dedicated_cfg.default.txt\r\nrm ${WORKDIR}\/UserData\/Maps\/MatchSettings\/example.txt",
+            "script": "echo \"==> Welcome! I prepare your environment. Give me a minute <==\"\r\napt update\r\napt -y install curl unzip\r\n\r\ncd \/mnt\/server\r\n\r\necho \"==> Downloading Trackmania 2020 <==\"\r\ncurl -sSL -o TrackmaniaServer.zip http:\/\/files.v04.maniaplanet.com\/server\/TrackmaniaServer_Latest.zip\r\n\r\necho \"==> Unpacking Trackmania 2020 <==\"\r\nunzip TrackmaniaServer.zip -d .\r\n\r\necho \"==> Renaming some files <==\"\r\nmv .\/UserData\/Config\/dedicated_cfg.default.txt .\/UserData\/Config\/dedicated_cfg.txt\r\nmv .\/UserData\/Maps\/MatchSettings\/example.txt .\/UserData\/Maps\/MatchSettings\/tracklist.txt\r\n\r\necho \"==> Final steps <==\"\r\nchmod +x TrackmaniaServer\r\nrm TrackmaniaServer.zip\r\nrm TrackmaniaServer.exe\r\n\r\necho \"==> Install complete <==\"\r\n\r\nexit 0",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
     },
     "variables": [
         {
-            "name": "MASTERSERVER_ACCOUNT_USER",
-            "description": "TrackMania Dedicated Server Login",
-            "env_variable": "MASTERSERVER_ACCOUNT_USER",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "MASTERSERVER_ACCOUNT_PWD",
-            "description": "Trackmania Dedicated Server Password",
-            "env_variable": "MASTERSERVER_ACCOUNT_PWD",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "SERVER_NAME",
-            "description": "TrackMania server name",
+            "name": "Server Name",
+            "description": "Name of your server",
             "env_variable": "SERVER_NAME",
-            "default_value": "",
+            "default_value": "Yet Another TM Server",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string",
+            "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
-            "name": "MAX_PLAYERS",
-            "description": "Max players value",
-            "env_variable": "MAX_PLAYERS",
+            "name": "Masterserver Username",
+            "description": "Username for the masterserver",
+            "env_variable": "MASTER_USER",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "Masterserver Password",
+            "description": "Passwort to authenticate with the master Server",
+            "env_variable": "MASTER_PASS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "Max Player",
+            "description": "Max. amount of player which are allowed to connect",
+            "env_variable": "MAX_PLAYER",
             "default_value": "32",
             "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|int|max:255",
-            "field_type": "text"
-        },
-        {
-            "name": "TM_SERVER_PORT",
-            "description": "TrackMania Server Port",
-            "env_variable": "TM_SERVER_PORT",
-            "default_value": "2350",
-            "user_viewable": true,
             "user_editable": false,
-            "rules": "required|int",
+            "rules": "required|integer|between:1,512",
             "field_type": "text"
         },
         {
-            "name": "DEDICATED_CFG",
-            "description": "Dedicated config file",
-            "env_variable": "DEDICATED_CFG",
-            "default_value": "dedicated_cfg.txt",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "MATCH_SETTINGS",
-            "description": "Match settings config file",
-            "env_variable": "MATCH_SETTINGS",
-            "default_value": "MatchSettings\/maplist.txt",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "SUPERADMIN_PWD",
-            "description": "SuperAdmin password",
-            "env_variable": "SUPERADMIN_PWD",
-            "default_value": "SuperAdmin",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "ADMIN_PWD",
-            "description": "Admin password",
-            "env_variable": "ADMIN_PWD",
-            "default_value": "Admin",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "USER_PWD",
-            "description": "User password",
-            "env_variable": "USER_PWD",
-            "default_value": "User",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string",
-            "field_type": "text"
-        },
-        {
-            "name": "SERVER_P2P_PORT",
-            "description": "P2P-Port",
-            "env_variable": "SERVER_P2P_PORT",
-            "default_value": "3450",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|int",
-            "field_type": "text"
-        },
-        {
-            "name": "XMLRPC_PORT",
-            "description": "XML RCP Port",
-            "env_variable": "XMLRPC_PORT",
+            "name": "XML RPC Port",
+            "description": "Port for remote control",
+            "env_variable": "RCP_PORT",
             "default_value": "5000",
             "user_viewable": true,
             "user_editable": false,
-            "rules": "required|int",
-            "field_type": "text"
-        },
-        {
-            "name": "MAX_SPECTATORS",
-            "description": "Spectator-Slots",
-            "env_variable": "MAX_SPECTATORS",
-            "default_value": "32",
-            "user_viewable": true,
-            "user_editable": false,
-            "rules": "required|int|max:255",
+            "rules": "required|string|max:5",
             "field_type": "text"
         }
     ]
