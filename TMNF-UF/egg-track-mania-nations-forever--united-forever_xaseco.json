@@ -4,10 +4,10 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-11-10T21:10:02+00:00",
-    "name": "TM+XAseco",
-    "author": "noreply@example.com",
-    "description": null,
+    "exported_at": "2023-11-26T14:33:20+01:00",
+    "name": "TrackMania NF \/ UF + xaseco",
+    "author": "info@gamemania.org",
+    "description": "TrackMania Nations Forever \/ United Forever Dedicated Server with xaseco. You need a MySQL-Database for this setup!",
     "features": null,
     "docker_images": {
         "whateverest1\/pterodactyl:php7.4": "whateverest1\/pterodactyl:php7.4"
@@ -15,14 +15,14 @@
     "file_denylist": [],
     "startup": ".\/start.sh",
     "config": {
-        "files": "{\r\n    \"tmserver\/GameData\/Config\/dedicated_cfg.txt\": {\r\n        \"parser\": \"xml\",\r\n        \"find\": {\r\n            \"dedicated.masterserver_account.login\": \"{{server.build.env.MASTER_LOGIN}}\",\r\n            \"dedicated.masterserver_account.password\": \"{{server.build.env.MASTER_PASSWORD}}\",\r\n            \"dedicated.masterserver_account.validation_key\": \"{{server.build.env.VALIDATION_KEY}}\",\r\n            \"dedicated.server_options.name\": \"{{server.build.env.SERVER_NAME}}\",\r\n            \"dedicated.server_options.max_players\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.max_spectators\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.password\": \"{{server.build.env.SERVER_PASSWORD}}\",\r\n            \"dedicated.system_config.force_ip_address\": \"{{server.build.env.FORCE_IP_ADDRESS}}\",\r\n            \"dedicated.system_config.server_port\": \"{{server.build.default.port}}\",\r\n            \"dedicated.system_config.server_p2p_port\": \"{{server.build.env.SERVER_P2P_PORT}}\",\r\n            \"dedicated.system_config.xmlrpc_port\": \"{{server.build.env.RPC_PORT}}\",\r\n            \"dedicated.system_config.xmlrpc_allowremote\": \"True\",\r\n            \"dedicated.system_config.packmask\": \"{{server.build.env.PACKMASK}}\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"tmserver\/GameData\/Config\/dedicated_cfg.txt\": {\r\n        \"parser\": \"xml\",\r\n        \"find\": {\r\n            \"dedicated.authorization_levels.level.password\": \"{{server.build.env.RPC_PASSWORD}}\",\r\n            \"dedicated.masterserver_account.login\": \"{{server.build.env.MASTER_LOGIN}}\",\r\n            \"dedicated.masterserver_account.password\": \"{{server.build.env.MASTER_PASSWORD}}\",\r\n            \"dedicated.masterserver_account.validation_key\": \"{{server.build.env.VALIDATION_KEY}}\",\r\n            \"dedicated.server_options.name\": \"{{server.build.env.SERVER_NAME}}\",\r\n            \"dedicated.server_options.comment\": \"{{server.build.env.SERVER_COMMENT}}\",\r\n            \"dedicated.server_options.max_players\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.max_spectators\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.password\": \"{{server.build.env.SERVER_PASSWORD}}\",\r\n            \"dedicated.system_config.force_ip_address\": \"{{server.build.env.FORCE_IP_ADDRESS}}\",\r\n            \"dedicated.system_config.server_port\": \"{{server.build.default.port}}\",\r\n            \"dedicated.system_config.server_p2p_port\": \"{{server.build.env.SERVER_P2P_PORT}}\",\r\n            \"dedicated.system_config.xmlrpc_port\": \"{{server.build.env.RPC_PORT}}\",\r\n            \"dedicated.system_config.xmlrpc_allowremote\": \"True\",\r\n            \"dedicated.system_config.packmask\": \"{{server.build.env.PACKMASK}}\"\r\n        }\r\n    }\r\n}",
         "startup": "{}",
         "logs": "{}",
         "stop": "stopserver"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\ncd \/mnt\/server || exit\r\napk update && apk upgrade\r\napk add --no-cache xmlstarlet composer curl\r\n\r\nSTART_SCRIPT=\"https:\/\/raw.githubusercontent.com\/WhatEverest1\/xaseco_egg\/main\/start.sh\"\r\nDEDICATED_SERVER=\"http:\/\/files2.trackmaniaforever.com\/TrackmaniaServer_2011-02-21.zip\"\r\nXASECO=\"https:\/\/fastdl.gamemania.org\/xaseco1.16-php7.zip\"\r\n\r\ncurl -o start.sh \"$START_SCRIPT\"\r\nchmod +x start.sh\r\n\r\necho \"Downloading server...\"\r\ncurl -o Server.zip \"$DEDICATED_SERVER\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o Server.zip -d tmserver\r\nrm Server.zip\r\n\r\necho \"Server download done, downloading XAseco...\"\r\ncurl -o XAseco.zip \"$XASECO\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o XAseco.zip -d xaseco\r\nrm XAseco.zip\r\ncd xaseco || exit\r\n\r\necho \"Moving files...\"\r\nrm Aseco.bat\r\nrm Aseco.sh\r\nrm AsecoF.sh\r\n# These need to be moved in order for XAseco to start\r\nmv .\/jfreu.config.php .\/includes\/jfreu.config.php\r\nmv .\/votes.config.php .\/includes\/votes.config.php\r\n\r\n# Using the Pterodactyl config file solution for these is not recommended, as it will escape some angle brackets.\r\n# So will xmlstarlet, which is why sed is used to unescape server related escaped angle brackets.\r\nxmlstarlet ed -L -u \"\/dedimania\/masterserver_account\/login\" -v \"$MASTER_LOGIN\" \\\r\n    -u \"\/dedimania\/masterserver_account\/password\" -v \"$MASTER_PASSWORD\" \\\r\n    -u \"\/dedimania\/masterserver_account\/nation\" -v \"$SERVER_NATION\" dedimania.xml\r\n\r\nxmlstarlet ed -L -u \"\/settings\/tmserver\/login\" -v \"$RPC_LOGIN\" \\\r\n    -u \"\/settings\/tmserver\/password\" -v \"$RPC_PASSWORD\" \\\r\n    -u \"\/settings\/tmserver\/ip\" -v \"$RPC_IP\" \\\r\n    -u \"\/settings\/tmserver\/port\" -v \"$RPC_PORT\" \\\r\n    -s \"\/settings\/aseco\/masteradmins\" -t elem -n \"tmlogin\" -v \"$MASTERADMIN_LOGIN\" config.xml\r\n\r\nxmlstarlet ed -L -u \"\/settings\/mysql_server\" -v \"$DB_HOST\" \\\r\n    -u \"\/settings\/mysql_login\" -v \"$DB_USER\" \\\r\n    -u \"\/settings\/mysql_password\" -v \"$DB_PASSWORD\" \\\r\n    -u \"\/settings\/mysql_database\" -v \"$DB_NAME\" localdatabase.xml\r\n    \r\nsed -i -e 's\/}&gt;&gt;\/}>>\/g' -e 's\/}&gt;\/}>\/g' dedimania.xml localdatabase.xml config.xml\r\n\r\n# If MySQL is used instead of MariaDB, the following changes will have to be made to the plugin.localdatabase.php file.\r\n# Read more: https:\/\/stackoverflow.com\/questions\/35565128\/mysql-incorrect-datetime-value-0000-00-00-000000\r\n# Feel free to uncomment if desired.\r\n#sed -i 's\/`UpdatedAt` datetime NOT NULL default '\\''0000-00-00 00:00:00'\\''\/`UpdatedAt` datetime NOT NULL default CURRENT_TIMESTAMP\/' plugins\/plugin.localdatabase.php\r\n#sed -i 's\/`Date` datetime NOT NULL default '\\''0000-00-00 00:00:00'\\''\/`Date` datetime NOT NULL default CURRENT_TIMESTAMP\/' plugins\/plugin.localdatabase.php\r\n\r\necho \"Installation done\"\r\nexit 0",
+            "script": "#!\/bin\/ash\r\ncd \/mnt\/server || exit\r\napk update && apk upgrade\r\napk add --no-cache xmlstarlet composer curl\r\n\r\nSTART_SCRIPT=\"https:\/\/raw.githubusercontent.com\/WhatEverest1\/xaseco_egg\/main\/start.sh\"\r\nDEDICATED_SERVER=\"http:\/\/files2.trackmaniaforever.com\/TrackmaniaServer_2011-02-21.zip\"\r\nXASECO=\"https:\/\/fastdl.gamemania.org\/xaseco1.16-php7.zip\"\r\n\r\ncurl -o start.sh \"$START_SCRIPT\"\r\nchmod +x start.sh\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Downloading server...\"\r\ncurl -o Server.zip \"$DEDICATED_SERVER\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o Server.zip -d tmserver\r\nrm Server.zip\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Server download done, downloading XAseco...\"\r\ncurl -o XAseco.zip \"$XASECO\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o XAseco.zip -d xaseco\r\nrm XAseco.zip\r\ncd xaseco || exit\r\n\r\necho \"Moving files...\"\r\nrm Aseco.bat\r\nrm Aseco.sh\r\nrm AsecoF.sh\r\n# These need to be moved in order for XAseco to start\r\nmv .\/jfreu.config.php .\/includes\/jfreu.config.php\r\nmv .\/votes.config.php .\/includes\/votes.config.php\r\n\r\n# Using the Pterodactyl config file solution for these is not recommended, as it will escape some angle brackets.\r\n# So will xmlstarlet, which is why sed is used to unescape server related escaped angle brackets.\r\nxmlstarlet ed -L -u \"\/dedimania\/masterserver_account\/login\" -v \"$MASTER_LOGIN\" \\\r\n    -u \"\/dedimania\/masterserver_account\/password\" -v \"$MASTER_PASSWORD\" \\\r\n    -u \"\/dedimania\/masterserver_account\/nation\" -v \"$SERVER_NATION\" dedimania.xml\r\n\r\nxmlstarlet ed -L -u \"\/settings\/tmserver\/login\" -v \"$RPC_LOGIN\" \\\r\n    -u \"\/settings\/tmserver\/password\" -v \"$RPC_PASSWORD\" \\\r\n    -u \"\/settings\/tmserver\/ip\" -v \"$RPC_IP\" \\\r\n    -u \"\/settings\/tmserver\/port\" -v \"$RPC_PORT\" \\\r\n    -s \"\/settings\/aseco\/masteradmins\" -t elem -n \"tmlogin\" -v \"$MASTERADMIN_LOGIN\" config.xml\r\n\r\nxmlstarlet ed -L -u \"\/settings\/mysql_server\" -v \"$DB_HOST\" \\\r\n    -u \"\/settings\/mysql_login\" -v \"$DB_USER\" \\\r\n    -u \"\/settings\/mysql_password\" -v \"$DB_PASSWORD\" \\\r\n    -u \"\/settings\/mysql_database\" -v \"$DB_NAME\" localdatabase.xml\r\n    \r\nsed -i -e 's\/}&gt;&gt;\/}>>\/g' -e 's\/}&gt;\/}>\/g' dedimania.xml localdatabase.xml config.xml\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Installation done\"\r\nexit 0",
             "container": "alpine:3.18.4",
             "entrypoint": "ash"
         }
@@ -30,47 +30,47 @@
     "variables": [
         {
             "name": "Master login",
-            "description": "",
+            "description": "Set the username of the dedicated Server Account. You can get one of here: https:\/\/players.trackmaniaforever.com\/",
             "env_variable": "MASTER_LOGIN",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "Master password",
-            "description": "",
+            "description": "Set the master password for the server account. If you forgotr it, you can set it here: https:\/\/players.trackmaniaforever.com\/",
             "env_variable": "MASTER_PASSWORD",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "Validation Key",
-            "description": "If you want to use coppers, enter the last three characters of your player key",
+            "description": "If you want to use coppers, enter the last three characters of your player key. You need to use the validation key of the account which create the master login!",
             "env_variable": "VALIDATION_KEY",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "nullable|string|max:20",
             "field_type": "text"
         },
         {
             "name": "Server name",
-            "description": "",
+            "description": "Enter a nice servername here. You can use the color-codes.",
             "env_variable": "SERVER_NAME",
             "default_value": "A TM Server",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string|max:50",
             "field_type": "text"
         },
         {
             "name": "Max players",
-            "description": "",
+            "description": "Set the maximum number of players who can drive. Max is 255! If you use a higher ladder-mode, respect the server rules!",
             "env_variable": "MAX_PLAYER",
             "default_value": "255",
             "user_viewable": false,
@@ -80,7 +80,7 @@
         },
         {
             "name": "P2P Port",
-            "description": "",
+            "description": "This Port is used for Peer to Peer data exchange. You need this, that mods, music and cars skins can load. Change this to a additional allocated port.",
             "env_variable": "SERVER_P2P_PORT",
             "default_value": "3450",
             "user_viewable": false,
@@ -90,7 +90,7 @@
         },
         {
             "name": "RPC Port",
-            "description": "",
+            "description": "This port is used for xaseco to communicate with the server. You dont need to publish this port to the world. Is okay if this is behind a good firewall.",
             "env_variable": "RPC_PORT",
             "default_value": "5000",
             "user_viewable": false,
@@ -100,17 +100,17 @@
         },
         {
             "name": "Masteradmin",
-            "description": "Your TM Login",
+            "description": "Enter your TrackMania NF \/ UF Login, to get Master-Admin rights on the server.",
             "env_variable": "MASTERADMIN_LOGIN",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string|max:50",
             "field_type": "text"
         },
         {
             "name": "RPC Login",
-            "description": "",
+            "description": "Dont change this, its not set up right now in xaseco.",
             "env_variable": "RPC_LOGIN",
             "default_value": "SuperAdmin",
             "user_viewable": false,
@@ -120,17 +120,17 @@
         },
         {
             "name": "RPC Password",
-            "description": "",
+            "description": "Set here a secure password for the SuperAdmin-Login for xaseco. You get a warning if you leaf it at default. This password will also set for Admin and User-Login.",
             "env_variable": "RPC_PASSWORD",
             "default_value": "SuperAdmin",
-            "user_viewable": false,
+            "user_viewable": true,
             "user_editable": false,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "RPC IP",
-            "description": "",
+            "description": "Dont change this, its not set up right now in xaseco.",
             "env_variable": "RPC_IP",
             "default_value": "localhost",
             "user_viewable": false,
@@ -140,61 +140,61 @@
         },
         {
             "name": "DB Host",
-            "description": "",
+            "description": "Set the IP-Address of the MySQL \/ MariaDB Database server. Its recomendet, that the DB-Server is on the same machine as the gameserver to reduce latency and for better security.",
             "env_variable": "DB_HOST",
             "default_value": "localhost",
-            "user_viewable": false,
+            "user_viewable": true,
             "user_editable": false,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "DB User",
-            "description": "",
+            "description": "Set the DB-User for the xaseco database. Remember to import the database structure first!",
             "env_variable": "DB_USER",
             "default_value": "",
-            "user_viewable": false,
+            "user_viewable": true,
             "user_editable": false,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "DB Password",
-            "description": "",
+            "description": "Set the password of the database-user for xaseco.",
             "env_variable": "DB_PASSWORD",
             "default_value": "",
-            "user_viewable": false,
+            "user_viewable": true,
             "user_editable": false,
             "rules": "nullable|string|max:32",
             "field_type": "text"
         },
         {
             "name": "DB Name",
-            "description": "",
+            "description": "Set the name of the database for xaseco. Remember to import the database structure first!",
             "env_variable": "DB_NAME",
             "default_value": "",
-            "user_viewable": false,
+            "user_viewable": true,
             "user_editable": false,
             "rules": "required|string|max:32",
             "field_type": "text"
         },
         {
             "name": "Server nation",
-            "description": "",
+            "description": "Set the Servernation for xaseco. DEU = Germany",
             "env_variable": "SERVER_NATION",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "required|string|max:3",
             "field_type": "text"
         },
         {
             "name": "Server password",
-            "description": "",
+            "description": "If you wish to have a private server, enter a password.",
             "env_variable": "SERVER_PASSWORD",
             "default_value": "",
-            "user_viewable": false,
-            "user_editable": false,
+            "user_viewable": true,
+            "user_editable": true,
             "rules": "nullable|string|max:32",
             "field_type": "text"
         },
@@ -206,6 +206,16 @@
             "user_viewable": false,
             "user_editable": false,
             "rules": "nullable|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "Server description",
+            "description": "Enter the description of the server. You can see this in the serverbrowser.",
+            "env_variable": "SERVER_COMMENT",
+            "default_value": "A TM Server by the Pterodactyl Egg of Hoerli1337 and Whateverest1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:100",
             "field_type": "text"
         }
     ]
