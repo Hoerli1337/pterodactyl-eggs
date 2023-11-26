@@ -69,4 +69,5 @@ mysql -u USERNAME -p DATABASENAME < rasp.sql
 
 Getestet mit Wings 1.11.3
 ![Screenshot](https://hoerli.net/wp-content/uploads/2023/04/TrackMania-Nations-Forever.png)
+![Screenshot](https://hoerli.net/wp-content/uploads/2023/11/Pterodactyl-TrackMania-Nations-United-Forever-Egg-xaseco.png)
 
