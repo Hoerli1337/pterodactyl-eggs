@@ -9,7 +9,25 @@ Requires only a TM account and necessary ports.
 
 A pure TM NF/UF server including XASECO in version 1.
 This server requires a MySQL database with the predefined tables for XASECO in order to function.
-More detailed instructions will follow.
+
+Setting up a TM NF / UF server with XASECO
+
+1. create a server from the Egg
+2. fill in all necessary fields, but enter incorrect access data for the database enter incorrect access data
+3. Install the server
+4. stop the server again immediately after the installation
+5. create a database via the panel
+6. enter the Enter the database access data in localdatabase.xml
+7. import the database structures for XASECO manually via the command line
+
+mysql -u USERNAME -p DATABASENAME < aseco.sql
+
+mysql -u USERNAME -p DATABASENAME < extra.sql
+
+mysql -u USERNAME -p DATABASENAME < rasp.sql
+
+
+8. start the server
 
 
 Tested on wings 1.11.3
