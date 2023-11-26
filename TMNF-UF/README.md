@@ -44,6 +44,7 @@ mysql -u USERNAME -p DATABASENAME < extra.sql
 
 mysql -u USERNAME -p DATABASENAME < rasp.sql
 
+
 8. Starte den Server
 
 
