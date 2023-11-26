@@ -37,6 +37,7 @@ Einrichtung eines TM NF / UF Servers mit XASECO
 5. Erstelle eine Datenbank über das Panel
 6. Gebe die Datenbank-Zugangsdaten in der localdatabase.xml ein
 7. Importiere über die Komandozeile die Datenbankstrukturen für XASECO von Hand
+
 mysql -u USERNAME -p DATABASENAME < aseco.sql
 
 mysql -u USERNAME -p DATABASENAME < extra.sql
