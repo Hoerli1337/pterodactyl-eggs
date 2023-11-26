@@ -43,7 +43,8 @@ mysql -u USERNAME -p DATABASENAME < aseco.sql
 mysql -u USERNAME -p DATABASENAME < extra.sql
 
 mysql -u USERNAME -p DATABASENAME < rasp.sql
-9. Starte den Server
+
+8. Starte den Server
 
 
 
