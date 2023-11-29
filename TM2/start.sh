@@ -1,12 +1,12 @@
 #!/bin/bash
 cd tmserver
-./TrackmaniaServer /game_settings=MatchSettings/Nations/NationsBlue.txt /dedicated_cfg=dedicated_cfg.txt /nodaemon &
+./ManiaPlanetServer /title=TMStadium@nadeo /game_settings=MatchSettings/maplist.txt /dedicated_cfg=dedicated_cfg.txt &
 cd ..
-cd xaseco
+cd uaseco
 while true; do
     if ss -tuln | grep ":$RPC_PORT " >/dev/null; then
         #php aseco.php TMF </dev/null >aseco.log 2>&1 &
-        php aseco.php TMF 2>&1 | tee aseco.log & # Show xaseco output in the Pterodactyl console
+        php -d allow_url_fopen=on -d safe_mode=0 uaseco.php TM2 2>&1 | tee aseco.log & # Show xaseco output in the Pterodactyl console
         break
     fi
 done
