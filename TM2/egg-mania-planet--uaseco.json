@@ -1,0 +1,222 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2023-11-29T19:36:22+01:00",
+    "name": "ManiaPlanet + uaseco",
+    "author": "info@hoerli.net",
+    "description": "ManiaPlanet Dedicated Server with uaseco. You need a MySQL-Database for this setup!",
+    "features": null,
+    "docker_images": {
+        "whateverest1\/pterodactyl:php7.4": "whateverest1\/pterodactyl:php7.4"
+    },
+    "file_denylist": [],
+    "startup": ".\/start.sh",
+    "config": {
+        "files": "{\r\n    \"tmserver\/UserData\/Config\/dedicated_cfg.txt\": {\r\n        \"parser\": \"xml\",\r\n        \"find\": {\r\n            \"dedicated.authorization_levels.level.password\": \"{{server.build.env.RPC_PASSWORD}}\",\r\n            \"dedicated.masterserver_account.login\": \"{{server.build.env.MASTER_LOGIN}}\",\r\n            \"dedicated.masterserver_account.password\": \"{{server.build.env.MASTER_PASSWORD}}\",\r\n            \"dedicated.masterserver_account.validation_key\": \"{{server.build.env.VALIDATION_KEY}}\",\r\n            \"dedicated.server_options.name\": \"{{server.build.env.SERVER_NAME}}\",\r\n            \"dedicated.server_options.comment\": \"{{server.build.env.SERVER_COMMENT}}\",\r\n            \"dedicated.server_options.max_players\": \"{{server.build.env.MAX_PLAYER}}\",\r\n            \"dedicated.server_options.max_spectators\": \"{{server.build.env.MAX_SPEC}}\",\r\n            \"dedicated.server_options.password\": \"{{server.build.env.SERVER_PASSWORD}}\",\r\n\t\t\t\"dedicated.server_options.enable_p2p_download\": \"True\",\r\n\t\t\t\"dedicated.server_options.allow_map_download\": \"False\",\r\n\t\t\t\"dedicated.system_config.connection_uploadrate\": \"1000000\",\r\n\t\t\t\"dedicated.system_config.connection_downloadrate\": \"1000000\",\r\n\t\t\t\"dedicated.system_config.p2p_cache_size\": \"4000\",\r\n            \"dedicated.system_config.server_port\": \"{{server.build.default.port}}\",\r\n            \"dedicated.system_config.server_p2p_port\": \"{{server.build.env.SERVER_P2P_PORT}}\",\r\n            \"dedicated.system_config.xmlrpc_port\": \"{{server.build.env.RPC_PORT}}\",\r\n            \"dedicated.system_config.title\": \"{{server.build.env.TITLE}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{}",
+        "logs": "{}",
+        "stop": "stopserver"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/ash\r\ncd \/mnt\/server || exit\r\napk update && apk upgrade\r\napk add --no-cache xmlstarlet composer curl wget\r\n\r\nSTART_SCRIPT=\"https:\/\/raw.githubusercontent.com\/Hoerli1337\/pterodactyl-eggs\/master\/TM2\/start.sh\"\r\nDEDICATED_SERVER=\"http:\/\/files.v04.maniaplanet.com\/server\/ManiaplanetServer_2019-10-23.zip\"\r\nUASECO=\"https:\/\/www.uaseco.org\/downloads\/UASECO\/UASECO-0.9.6_2019-03-02.zip\"\r\nTRACKLIST_URL=\"https:\/\/raw.githubusercontent.com\/Hoerli1337\/pterodactyl-eggs\/master\/TM2\/maplist.txt\"\r\nTITLEPACK_URL=\"https:\/\/maniaplanet.com\/ingame\/public\/titles\/download\/TMStadium@nadeo.Title.Pack.gbx\"\r\nMAPS_URL=\"https:\/\/github.com\/Hoerli1337\/pterodactyl-eggs\/raw\/master\/TM2\/01_White.zip\"\r\nWORKDIR=\"\/mnt\/server\"\r\n\r\ncurl -o start.sh \"$START_SCRIPT\"\r\nchmod +x start.sh\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Downloading server...\"\r\ncurl -o Server.zip \"$DEDICATED_SERVER\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o Server.zip -d tmserver\r\nrm Server.zip\r\n\r\necho \"Remove files...\"\r\nrm -r ${WORKDIR}\/tmserver\/RemoteControlExamples\r\nrm ${WORKDIR}\/tmserver\/ListCallbacks_2013-04-16.html\r\nrm ${WORKDIR}\/tmserver\/ListCallbacks_2012-06-19.html\r\nrm ${WORKDIR}\/tmserver\/ListCallbacks_2011-10-06.html\r\nrm ${WORKDIR}\/tmserver\/ListCallbacks_2011-08-01.html\r\nrm ${WORKDIR}\/tmserver\/ManiaPlanetServer.exe\r\n\r\necho \"Moving files...\"\r\nmv tmserver\/UserData\/Config\/dedicated_cfg.default.txt tmserver\/UserData\/Config\/dedicated_cfg.txt\r\n\r\necho \"Get Maplist and Maps...\"\r\ncurl -o maplist.txt \"$TRACKLIST_URL\"\r\nmkdir -p ${WORKDIR}\/tmserver\/UserData\/Maps\/MatchSettings\/\r\nmv ${WORKDIR}\/maplist.txt ${WORKDIR}\/tmserver\/UserData\/Maps\/MatchSettings\/\r\n\r\nwget ${MAPS_URL} -qO ${WORKDIR}\/maps.zip\r\nmkdir -p ${WORKDIR}\/tmserver\/UserData\/Maps\/Campaigns\/TMStadium\/01_White\/\r\nunzip -o ${WORKDIR}\/maps.zip -d ${WORKDIR}\/tmserver\/UserData\/Maps\/Campaigns\/TMStadium\/01_White\/\r\nrm ${WORKDIR}\/maps.zip\r\n\r\ncurl -o TMStadium@nadeo.Title.Pack.gbx \"$TITLEPACK_URL\"\r\nmv ${WORKDIR}\/TMStadium@nadeo.Title.Pack.gbx ${WORKDIR}\/tmserver\/Packs\/\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Server download done, downloading uaseco...\"\r\ncurl -o uaseco.zip \"$UASECO\"\r\n\r\necho \"Unzipping files...\"\r\nunzip -o uaseco.zip\r\nmv UASECO-0.9.6_2019-03-02 uaseco\r\nrm uaseco.zip\r\n\r\necho \"Download ok, now move some files...\"\r\ncp -r ${WORKDIR}\/uaseco\/newinstall\/* ${WORKDIR}\/uaseco\r\nmkdir -p ${WORKDIR}\/uaseco\/mapimages\/\r\n\r\necho \"Setting up uaseco...\"\r\n# Using the Pterodactyl config file solution for these is not recommended, as it will escape some angle brackets.\r\n# So will xmlstarlet, which is why sed is used to unescape server related escaped angle brackets.\r\nxmlstarlet ed -L -u \"\/dedimania\/masterserver_account\/login\" -v \"$MASTER_LOGIN\" \\\r\n                 -u \"\/dedimania\/masterserver_account\/dedimaniacode\" -v \"$DEDIMANIACODE\" ${WORKDIR}\/uaseco\/config\/dedimania.xml\r\n                 \r\nxmlstarlet ed -L -u \"\/mania_karma\/nation\" -v \"$SERVERNATION\" ${WORKDIR}\/uaseco\/config\/mania_karma.xml\r\n\r\nxmlstarlet ed -L -u \"\/settings\/dedicated_server\/password\" -v \"$RPC_PASSWORD\" \\\r\n                 -u \"\/settings\/dedicated_server\/port\" -v \"$RPC_PORT\" \\\r\n                 -s \"\/settings\/masteradmins\" -t elem -n \"tmlogin\" -v \"$TMUSERMASTERADMIN\" \\\r\n                 -u \"\/settings\/dbms\/host\" -v \"$DBIPADDRESS\" \\\r\n                 -u \"\/settings\/dbms\/login\" -v \"$DBUSERNAME\" \\\r\n                 -u \"\/settings\/dbms\/password\" -v \"$DBPASSWORD\" \\\r\n                 -u \"\/settings\/dbms\/database\" -v \"$DBNAME\" \\\r\n                 -u \"\/settings\/dedicated_installation\" -v \"${WORKDIR}\/tmserver\/\" \\\r\n                 -u \"\/settings\/mapimages_path\" -v \"${WORKDIR}\/uaseco\/mapimages\/\" ${WORKDIR}\/uaseco\/config\/UASECO.xml\r\n\r\n#################################\r\n\r\necho \"_________________________________________________________________________\"\r\necho \"Installation done\"\r\nexit 0",
+            "container": "alpine:3.18.4",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": [
+        {
+            "name": "TrackMania Server Account",
+            "description": "Enter your dedicated Server Account here. If you dont have one, get one here: https:\/\/v4.live.maniaplanet.com\/login",
+            "env_variable": "MASTER_LOGIN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "TrackMania Server PW",
+            "description": "Enter the password of your dedicated server account. If you dont have one, get it here: https:\/\/v4.live.maniaplanet.com\/login",
+            "env_variable": "MASTER_PASSWORD",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "ValiKey f\u00fcr TM Server",
+            "description": "Enter your Validation-Key here.",
+            "env_variable": "VALIDATION_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:5",
+            "field_type": "text"
+        },
+        {
+            "name": "TMServer Name",
+            "description": "Enter a nice Servername. You can use the colorcodes.",
+            "env_variable": "SERVER_NAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:50",
+            "field_type": "text"
+        },
+        {
+            "name": "Description",
+            "description": "Add a nice description of your server. This is displayed in the serverbrowser. You can use the colorcodes here.",
+            "env_variable": "SERVER_COMMENT",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "Maximum players",
+            "description": "Set the slot-limit of your server",
+            "env_variable": "MAX_PLAYER",
+            "default_value": "32",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:3",
+            "field_type": "text"
+        },
+        {
+            "name": "Spectators",
+            "description": "Set the slot-limit for the Spectator-Mode.",
+            "env_variable": "MAX_SPEC",
+            "default_value": "32",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:3",
+            "field_type": "text"
+        },
+        {
+            "name": "P2P Port",
+            "description": "The P2P-Port for filetransfer.",
+            "env_variable": "SERVER_P2P_PORT",
+            "default_value": "3450",
+            "user_viewable": false,
+            "user_editable": false,
+            "rules": "required|string|max:5",
+            "field_type": "text"
+        },
+        {
+            "name": "XMLRCP-Port",
+            "description": "This port is used by uaseco to connect to the server. This port doesn't need to published to the internet.",
+            "env_variable": "RPC_PORT",
+            "default_value": "5000",
+            "user_viewable": false,
+            "user_editable": false,
+            "rules": "required|string|max:5",
+            "field_type": "text"
+        },
+        {
+            "name": "UASECO MasterAdmin",
+            "description": "Enter your TM-Login to get MasterAdmin-Rights on the server by UASECO.",
+            "env_variable": "TMUSERMASTERADMIN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "UASECO Admin",
+            "description": "Enter a TM-Login to get Admin-Rights on the server by UASECO. This is not the MasterAdmin!",
+            "env_variable": "TMUSERADMIN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Dedimania Code",
+            "description": "Enter a valide Dedimania-Code to enable Dedimania-Records. Get one here: http:\/\/dedimania.net\/tm2stats\/?do=register",
+            "env_variable": "DEDIMANIACODE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Servernation for ManiaKarma",
+            "description": "Enter a Servernation for ManiaKarma. Use the ISO-Standard! DEU = Germany http:\/\/en.wikipedia.org\/wiki\/ISO_3166-1#Officially_assigned_code_elements",
+            "env_variable": "SERVERNATION",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Database-IP",
+            "description": "Enter the IP-Address of the database-server for the UASECO-DB.",
+            "env_variable": "DBIPADDRESS",
+            "default_value": "localhost",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Database-Username",
+            "description": "Enter the username of the database for UASECO.",
+            "env_variable": "DBUSERNAME",
+            "default_value": "LOGIN",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Database password",
+            "description": "Enter the password of the database for UASECO.",
+            "env_variable": "DBPASSWORD",
+            "default_value": "PASSWORD",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Database name",
+            "description": "Enter the name of the database for UASECO.",
+            "env_variable": "DBNAME",
+            "default_value": "DATABASE",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "SuperAdmin Password",
+            "description": "Enter a new SuperAdmin-Password for the ManiaPlanet-Server. If you leav it on \"SuperAdmin\", you will get a warning in the log.",
+            "env_variable": "RPC_PASSWORD",
+            "default_value": "SuperAdmin",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "ManiaPlanet Title",
+            "description": "Set the Title which will be played on the server. For example TMStadium, SMStorm, TMCanyon. For some special titles, you need to upload a correct title-pack to the server! By default the installer get the TMStadium-Titlepack.",
+            "env_variable": "TITLE",
+            "default_value": "SMStorm",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:10",
+            "field_type": "text"
+        }
+    ]
+}
