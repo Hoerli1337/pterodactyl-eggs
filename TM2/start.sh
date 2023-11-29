@@ -6,7 +6,7 @@ cd uaseco
 while true; do
     if ss -tuln | grep ":$RPC_PORT " >/dev/null; then
         #php aseco.php TMF </dev/null >aseco.log 2>&1 &
-        php -d allow_url_fopen=on -d safe_mode=0 uaseco.php TM2 2>&1 | tee aseco.log & # Show xaseco output in the Pterodactyl console
+        php -d allow_url_fopen=on -d safe_mode=0 uaseco.php TM2 2>>logs/$DATE-uaseco-current.log 2>&1 | tee logs/$DATE-uaseco-current.log & # Show xaseco output in the Pterodactyl console
         break
     fi
 done
