@@ -3,6 +3,7 @@ cd tmserver
 ./ManiaPlanetServer /title=TMStadium@nadeo /game_settings=MatchSettings/maplist.txt /dedicated_cfg=dedicated_cfg.txt &
 cd ..
 cd uaseco
+php webrequest.php &
 while true; do
     if ss -tuln | grep ":$RPC_PORT " >/dev/null; then
         #php aseco.php TMF </dev/null >aseco.log 2>&1 &
